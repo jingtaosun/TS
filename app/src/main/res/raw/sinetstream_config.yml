@@ -1,0 +1,12 @@
+service-1:
+  type: mqtt
+  brokers: mqtt.vcp-handson.org
+  tls: true
+  transport: websockets
+  username_pw_set:
+    username: mqtt
+    password: TlQr6657bEWP1zGp
+  topic: test-sinetstream-android-20191021
+  consistency: AT_LEAST_ONCE
+  retain: true
+  client_id: client-sinetstream-android-20191021-1
