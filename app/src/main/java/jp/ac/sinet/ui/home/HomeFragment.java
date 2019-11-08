@@ -25,9 +25,7 @@ import jp.ad.sinet.stream.api.async.SuccessCallback;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    private Button button;
-    private EditText editText;
-    private AsyncMessageWriter<String> writer;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,9 +35,6 @@ public class HomeFragment extends Fragment {
 
 
         final TextView textView = root.findViewById(R.id.text_home);
-
-        button = root.findViewById(R.id.button);
-        editText = root.findViewById(R.id.editText);
 
         homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -51,41 +46,5 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Activity activity = getActivity();
-        if (activity == null) {
-            return;
-        }
-        if (writer == null) {
-            writer = new AndroidMessageWriterFactory.Builder<String>().service("service-1").context(activity).build().getAsyncWriter();
-        }
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendMessage(editText);
-            }
-    });
-    }
-
-    private void sendMessage(EditText editText) {
-        if (editText == null) {
-            return;
-        }
-        String message = editText.getText().toString();
-        writer.write(message).addCallback(new SuccessCallback<String>() {
-            @Override
-            public void onSuccess(@org.jetbrains.annotations.Nullable String s) {
-                Log.d("debug", "PUBLISH SUCCESS");
-            }
-        }, new FailureCallback<String>() {
-            @Override
-            public void onFailure(String s, Throwable throwable) {
-                Log.d("debug", "PUBLISH FAILURE", throwable);
-            }
-        });
-    }
 
 }

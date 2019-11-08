@@ -1,16 +1,14 @@
-package jp.ac.nii.mqtt;
+package jp.ac.sinet;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
 public class MessageJson {
 
-
-    String sensor;
+    public String sensor;
     double longitude = 0.0, latitude = 0.0;
-    String time;
+    public String time;
 //    public List<Double> list_value;
     double value;
 
