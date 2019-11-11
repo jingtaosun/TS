@@ -1,6 +1,7 @@
 package jp.ac.sinet.ui.dashboard;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -151,6 +152,7 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
             public void onClick(View view) {
                 Log.d("tagf",String.valueOf(sensorItemList.get(0).getValue()));
                 sendMessage(String.valueOf(sensorItemList.get(0).getValue()));
+                Toast.makeText(getContext(),String.valueOf(sensorItemList.get(0).getValue()),Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -200,7 +202,9 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
                         if (item.getSensorTopic().equals("mqtt-android-light")){
                             item.setValue(light_value);
                         }
-                        updateListView();
+                        if (getActivity()!= null) {
+                            updateListView();
+                        }
                     }
                 }
                 break;
