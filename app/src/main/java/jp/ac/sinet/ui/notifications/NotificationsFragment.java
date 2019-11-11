@@ -27,7 +27,7 @@ public class NotificationsFragment extends Fragment {
     private NotificationsViewModel notificationsViewModel;
 
     private AsyncMessageReader<String> reader;
-    private Handler handler = new Handler();
+
 
     private TextView reader_iot;
 //    private Button button_iot;
@@ -65,28 +65,33 @@ public class NotificationsFragment extends Fragment {
 //            button_iot.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
-                    reader.addCallback(new MessageCallback<String>() {
+            final Handler handler = new Handler();
+//            final Button button_iot = activity.findViewById(R.id.button_iot);
+
+//            button_iot.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                }
+//            });
+
+            reader.addCallback(new MessageCallback<String>() {
+                @Override
+                public void onMessage(final Message<String> message) {
+                    Log.d("message", message.getValue());
+
+                    handler.post(new Runnable() {
                         @Override
-                        public void onMessage(final Message<String> message) {
+                        public void run() {
+
+                            reader_iot.setText(message.getValue());
                             Log.d("message", message.getValue());
-
-
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    reader_iot.setText(message.getValue());
-//                            Log.d("")
-                                }
-                            });
                         }
                     });
                 }
-//            });
-
-
-
+            });
+                }
 
         }
-//    }
+
 }

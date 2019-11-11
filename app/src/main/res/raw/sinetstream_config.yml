@@ -6,7 +6,6 @@ service-1:
   username_pw_set:
     username: mqtt
     password: TlQr6657bEWP1zGp
-  topic: test-sinetstream-android-20191021
+  topic: mqtt-android-light
   consistency: AT_LEAST_ONCE
   retain: true
-  client_id: client-sinetstream-android-20191021-1

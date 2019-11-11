@@ -36,11 +36,9 @@ import jp.ad.sinet.stream.api.async.SuccessCallback;
 public class DashboardFragment extends Fragment implements SensorEventListener{
 
     private DashboardViewModel dashboardViewModel;
-
     private SensorManager sensorManager;
 
     private TextView textView;
-
     private Button button;
     private EditText editText;
     private AsyncMessageWriter<String> writer;
@@ -105,7 +103,7 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
         }
         MessageJson info = new MessageJson();
         info.time = info.timezone("Asia/Tokyo");
-        info.sensor = editText.getText().toString();
+        info.value = Double.parseDouble(editText.getText().toString());
 
         Log.d("time",info.toString());
 

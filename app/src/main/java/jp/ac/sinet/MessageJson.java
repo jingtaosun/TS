@@ -6,15 +6,11 @@ import java.util.TimeZone;
 
 public class MessageJson {
 
-    public String sensor;
-    double longitude = 0.0, latitude = 0.0;
+//     double sensor;
+//    double longitude = 0.0, latitude = 0.0;
     public String time;
-//    public List<Double> list_value;
-    double value;
+    public double value;
 
-//    public void setList(List<Double> list) {
-//        this.list_value = list;
-//    }
     public String timezone(String zone) {
         // TODO Auto-generated method stub
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXX");
