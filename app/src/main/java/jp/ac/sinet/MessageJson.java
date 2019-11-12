@@ -6,8 +6,6 @@ import java.util.TimeZone;
 
 public class MessageJson {
 
-//     double sensor;
-//    double longitude = 0.0, latitude = 0.0;
     public String time;
     public double value;
 

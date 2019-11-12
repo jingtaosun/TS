@@ -88,9 +88,6 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
             }
         });
 
-//        button = root.findViewById(R.id.button);
-//        editText = root.findViewById(R.id.editText);
-
         addSensorButton = root.findViewById(R.id.add_fab);
         publishButton = root.findViewById(R.id.publish_fab);
         listView = root.findViewById(R.id.sensor_list);
@@ -109,14 +106,6 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
             }
         });
 
-//        publishButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-
-
         return root;
     }
 
@@ -125,10 +114,8 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
         // TODO Auto-generated method stub
         super.onActivityCreated(savedInstanceState);
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        // 照度センサーを指定してオブジェクトリストを取得する
         List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_LIGHT);
 
-        // 照度センサーがサポートされているか確認してから登録する
         if (sensors.size() > 0) {
             Sensor s = sensors.get(0);
             sensorManager.registerListener(this, s, SensorManager.SENSOR_DELAY_UI);
@@ -158,9 +145,6 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
     }
 
     private void sendMessage(String text) {
-//        if (editText == null) {
-//            return;
-//        }
         MessageJson info = new MessageJson();
         info.time = info.timezone("Asia/Tokyo");
         info.value = Double.parseDouble(text);
@@ -194,9 +178,7 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
     public void onSensorChanged(SensorEvent sensorEvent) {
         switch(sensorEvent.sensor.getType()){
             case Sensor.TYPE_LIGHT:
-                 //現在の明るさを取得
                 double light_value = sensorEvent.values[0];
-               // editText.setText(String.valueOf(light_value));
                 if (!sensorItemList.isEmpty()){
                     for (SensorItem item : sensorItemList) {
                         if (item.getSensorTopic().equals("mqtt-android-light")){

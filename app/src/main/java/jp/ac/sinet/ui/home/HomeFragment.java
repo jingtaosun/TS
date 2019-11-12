@@ -49,7 +49,6 @@ public class HomeFragment extends Fragment {
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-
         config = root.findViewById(R.id.text_home);
         saveButton = root.findViewById(R.id.save01);
 
@@ -69,7 +68,6 @@ public class HomeFragment extends Fragment {
 
         bar = root.findViewById(R.id.seekbar01);
         set_bar = root.findViewById(R.id.set_bar01);
-
 
         homeViewModel.getText().observe(this, new Observer<String>() {
             @Override

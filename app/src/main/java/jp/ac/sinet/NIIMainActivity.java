@@ -2,24 +2,17 @@ package jp.ac.sinet;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import jp.ac.sinet.ui.dashboard.DashboardFragment;
-import jp.ac.sinet.ui.home.HomeFragment;
-import jp.ac.sinet.ui.notifications.NotificationsFragment;
+
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -83,7 +76,7 @@ public class NIIMainActivity extends AppCompatActivity {
         try {
             Files.copy(src, dest.toPath(), REPLACE_EXISTING);
         } catch (IOException e) {
-            Log.d("DEBUG", "SINETStreamの設定ファイルの配置に失敗した", e);
+            Log.d("DEBUG", "The configuration of SINETStream is failure", e);
         }
     }
 

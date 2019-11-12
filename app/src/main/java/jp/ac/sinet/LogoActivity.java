@@ -17,7 +17,6 @@ public class LogoActivity extends Activity {
         logoImage = findViewById(R.id.logo_image);
         logoImage.setImageResource(R.drawable.niilog);
 
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

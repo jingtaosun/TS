@@ -27,11 +27,7 @@ public class NotificationsFragment extends Fragment {
     private NotificationsViewModel notificationsViewModel;
 
     private AsyncMessageReader<String> reader;
-
-
     private TextView reader_iot;
-//    private Button button_iot;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
@@ -40,8 +36,6 @@ public class NotificationsFragment extends Fragment {
         final TextView textView = root.findViewById(R.id.text_notifications);
 
         reader_iot = root.findViewById(R.id.textView_iot);
-//        button_iot = root.findViewById(R.id.button_iot);
-
         notificationsViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -61,20 +55,7 @@ public class NotificationsFragment extends Fragment {
 
         if (reader == null) {
             reader = new AndroidMessageReaderFactory.Builder<String>().service("service-1").context(activity).build().getAsyncReader();
-//            reader.addCallback((msg) -> handler.post(() -> reader_iot.setText(msg.getValue())));
-//            button_iot.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
             final Handler handler = new Handler();
-//            final Button button_iot = activity.findViewById(R.id.button_iot);
-
-//            button_iot.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//
-//                }
-//            });
-
             reader.addCallback(new MessageCallback<String>() {
                 @Override
                 public void onMessage(final Message<String> message) {
