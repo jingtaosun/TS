@@ -7,5 +7,6 @@
 
     <color name="background">#FAFAFA</color>
     <color name="colorOrange">#ee6002</color>
+    <color name="colorBlue">#483D8B</color>
 
 </resources>

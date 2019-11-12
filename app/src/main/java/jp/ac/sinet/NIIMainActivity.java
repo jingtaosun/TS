@@ -2,6 +2,7 @@ package jp.ac.sinet;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -10,21 +11,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import jp.ac.sinet.ui.dashboard.DashboardFragment;
+import jp.ac.sinet.ui.home.HomeFragment;
+import jp.ac.sinet.ui.notifications.NotificationsFragment;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-public class NIIMainActivity extends AppCompatActivity{
+public class NIIMainActivity extends AppCompatActivity {
+
+
+//    private HomeFragment homeFragment;
+//    private DashboardFragment settingFragment;
+//    private NotificationsFragment resultFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        BottomNavigationView navView = findViewById(R.id.navigation);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -34,6 +44,32 @@ public class NIIMainActivity extends AppCompatActivity{
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+//        homeFragment = new HomeFragment();
+//        settingFragment = new DashboardFragment();
+//        resultFragment = new NotificationsFragment();
+//
+//        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
+//
+//        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+//
+//        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//                switch (menuItem.getItemId()) {
+//                    case R.id.navigation_home:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, homeFragment,"HomeFragment").commit();
+//                        return true;
+//                    case R.id.navigation_dashboard:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, settingFragment,"SettingFragment").commit();
+//                        return true;
+//                    case R.id.navigation_notifications:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, resultFragment,"ResultFragment").commit();
+//                        return true;
+//                }
+//                return false;
+//            }
+//        });
 
         initConfigFile();
 
@@ -50,5 +86,6 @@ public class NIIMainActivity extends AppCompatActivity{
             Log.d("DEBUG", "SINETStreamの設定ファイルの配置に失敗した", e);
         }
     }
+
 
 }

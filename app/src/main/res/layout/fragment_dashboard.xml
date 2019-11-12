@@ -43,29 +43,16 @@
                 android:id="@+id/publish_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:backgroundTint="#483D8B"
                 app:srcCompat="@drawable/connected" />
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:id="@+id/connect_fab"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@+id/publish"-->
-<!--                android:layout_marginTop="3dp"-->
-<!--                app:srcCompat="@drawable/disconnected" />-->
-
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:id="@+id/video"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@+id/connect_fab"-->
-<!--                android:layout_marginTop="3dp"-->
-<!--                app:srcCompat="@android:drawable/ic_menu_camera" />-->
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/add_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
                 android:layout_below="@+id/publish_fab"
+                android:layout_marginTop="3dp"
+                app:backgroundTint="#483D8B"
                 app:srcCompat="@drawable/edit" />
 
         </RelativeLayout>
@@ -116,3 +103,18 @@
     <!--        app:layout_constraintEnd_toEndOf="parent"-->
     <!--        app:layout_constraintStart_toStartOf="parent"-->
     <!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--                android:id="@+id/connect_fab"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_below="@+id/publish"-->
+    <!--                android:layout_marginTop="3dp"-->
+    <!--                app:srcCompat="@drawable/disconnected" />-->
+
+    <!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--                android:id="@+id/video"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_below="@+id/connect_fab"-->
+    <!--                android:layout_marginTop="3dp"-->
+    <!--                app:srcCompat="@android:drawable/ic_menu_camera" />-->
