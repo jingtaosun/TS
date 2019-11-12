@@ -1,6 +1,8 @@
 package jp.ac.sinet.ui.notifications;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -28,6 +30,10 @@ public class NotificationsFragment extends Fragment {
 
     private AsyncMessageReader<String> reader;
     private TextView reader_iot;
+    private Button button_iot;
+
+    String url = "https://vcc3056.vcp-handson.org/kibana/goto/2659afdf4ab21eca910236d2cc013203";
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
@@ -42,6 +48,19 @@ public class NotificationsFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+        button_iot = root.findViewById(R.id.button_iot);
+        button_iot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                // Note the Chooser below. If no applications match,
+                // Android displays a system message.So here there is no need for try-catch.
+                startActivity(Intent.createChooser(intent, "Browse with"));
+            }
+        });
+
+
         return root;
     }
 
@@ -74,5 +93,6 @@ public class NotificationsFragment extends Fragment {
                 }
 
         }
+
 
 }
