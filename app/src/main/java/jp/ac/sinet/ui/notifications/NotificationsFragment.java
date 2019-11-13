@@ -92,7 +92,25 @@ public class NotificationsFragment extends Fragment {
             });
                 }
 
-        }
+
+//        final Handler handler = new Handler();
+//        final Runnable r = new Runnable() {
+//            int count = 0;
+//            @Override
+//            public void run() {
+//                // UIスレッド
+//                count++;
+//                if (count > 5) { // 5回実行したら終了
+//                    return;
+//                }
+//                Log.d("handler",""+count);
+//                handler.postDelayed(this, 10000);
+//            }
+//        };
+//        handler.post(r);
+
+
+    }
 
 
 }

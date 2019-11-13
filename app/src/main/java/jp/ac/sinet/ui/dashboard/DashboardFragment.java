@@ -11,6 +11,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +56,7 @@ import jp.ad.sinet.stream.api.async.AsyncMessageWriter;
 import jp.ad.sinet.stream.api.async.FailureCallback;
 import jp.ad.sinet.stream.api.async.SuccessCallback;
 
-public class DashboardFragment extends Fragment implements SensorEventListener{
+public class DashboardFragment extends Fragment implements SensorEventListener {
 
     private DashboardViewModel dashboardViewModel;
     private SensorManager sensorManager;
@@ -66,23 +67,22 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
     private AsyncMessageWriter<String> writer;
     private String message;
 
-    private FloatingActionButton addSensorButton,publishButton;
+    private FloatingActionButton addSensorButton, publishButton;
     private ListView listView;
     private List<SensorItem> sensorItemList = new ArrayList<>();
     private SensorItem sensorItem;
 
     protected FragmentActivity mActivity;
-    private List<Sensor> sensor_light,sensor_accle,sensor_pressure;
+    private List<Sensor> sensor_light, sensor_accle, sensor_pressure;
     private Bundle bundle;
     private int time_process;
-    private int current_hour,current_min, setting_hour, setting_min;
+    private int current_hour, current_min, setting_hour, setting_min;
     private int bar_value;
 
 //    StringBuilder sendor_value = new StringBuilder();
 
     public static final int DIALOG_FRAGMENT = 200;
     public static final int RESULT_OK = -1;
-
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -126,25 +126,25 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
         // TODO Auto-generated method stub
         super.onActivityCreated(savedInstanceState);
 //        if (sensorManager!=null) {
-            sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-            sensor_light = sensorManager.getSensorList(Sensor.TYPE_LIGHT);
-            sensor_accle = sensorManager.getSensorList(Sensor.TYPE_STEP_COUNTER);
-            sensor_pressure = sensorManager.getSensorList(Sensor.TYPE_PRESSURE);
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        sensor_light = sensorManager.getSensorList(Sensor.TYPE_LIGHT);
+        sensor_accle = sensorManager.getSensorList(Sensor.TYPE_STEP_COUNTER);
+        sensor_pressure = sensorManager.getSensorList(Sensor.TYPE_PRESSURE);
 
-            if (sensor_light.size() > 0) {
-                Sensor s = sensor_light.get(0);
-                sensorManager.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
-            }
+        if (sensor_light.size() > 0) {
+            Sensor s = sensor_light.get(0);
+            sensorManager.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
+        }
 
-            if (sensor_accle.size() > 0) {
-                Sensor s = sensor_accle.get(0);
-                sensorManager.registerListener(this, s, (int) 1e6);
-            }
+        if (sensor_accle.size() > 0) {
+            Sensor s = sensor_accle.get(0);
+            sensorManager.registerListener(this, s, (int) 1e6);
+        }
 
-            if (sensor_pressure.size() > 0) {
-                Sensor s = sensor_pressure.get(0);
-                sensorManager.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
-            }
+        if (sensor_pressure.size() > 0) {
+            Sensor s = sensor_pressure.get(0);
+            sensorManager.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
+        }
 //        }
     }
 
@@ -157,17 +157,17 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
         current_min = Integer.parseInt(current_time[1]);
 
         bundle = getArguments();
-        if (bundle!=null){
+        if (bundle != null) {
 //            time_infor = bundle.getString("time");
 //            Log.d("timessss", time_infor);
-            String[] setting_time = bundle.getString("time").split(",",0);
+            String[] setting_time = bundle.getString("time").split(",", 0);
             bar_value = Integer.parseInt(setting_time[0]);
             setting_hour = Integer.parseInt(setting_time[1]);
             setting_min = Integer.parseInt(setting_time[2]);
         }
-        time_process = ((setting_hour-current_hour)*60+(setting_min-current_min)*60)/bar_value;
+        time_process = ((setting_hour - current_hour) * 60 + (setting_min - current_min) * 60) / bar_value;
 
-        Log.d("tagg", current_hour+":"+current_min+":"+setting_hour+":"+setting_min+":"+bar_value+":"+time_process);
+        Log.d("tagg", current_hour + ":" + current_min + ":" + setting_hour + ":" + setting_min + ":" + bar_value + ":" + time_process);
 
         if (writer == null) {
             writer = new AndroidMessageWriterFactory.Builder<String>().service("service-1").context(activity).build().getAsyncWriter();
@@ -176,14 +176,14 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
         publishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("tagf",String.valueOf(sensorItemList.get(0).getValue()));
+                Log.d("tagf", String.valueOf(sensorItemList.get(0).getValue()));
 
 
 //                sendMessage(String.valueOf(sensorItemList.get(0).getValue()));
                 int i = 0;
                 final StringBuilder stringBuilder = new StringBuilder();
-                for (SensorItem item: sensorItemList){
-                    if (item.checkbox){
+                for (SensorItem item : sensorItemList) {
+                    if (item.checkbox) {
                         stringBuilder.append(i);
                         stringBuilder.append(",");
                         stringBuilder.append(sensorItemList.get(i).getValue());
@@ -192,18 +192,27 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
                     i++;
                 }
 
-                        if (time_process>0) {
-                            for (int j = 0; j < time_process; j++) {
-                                sendMessage(stringBuilder.toString());
-                                Log.d("tagg", stringBuilder.toString()+":"+j);
-                            }
-                            Toast.makeText(getContext(),"Finish",Toast.LENGTH_LONG).show();
-                        }else if(time_process == 0){
-                            sendMessage(stringBuilder.toString());
-//                            Toast.makeText(getContext(),"Finish",Toast.LENGTH_LONG).show();
+                final Handler handler = new Handler();
+                Runnable r = new Runnable() {
+                    int count = 0;
 
+                    @Override
+                    public void run() {
+                        // UIスレッド
+                        count++;
+                        if (count > time_process) {
+                            return;
                         }
-//                Toast.makeText(getContext(),stringBuilder.toString()+":"+time_process,Toast.LENGTH_LONG).show();
+                        publishButton.setContextClickable(false);
+                        sendMessage(stringBuilder.toString());
+
+                        Log.d("handler", count+":" + stringBuilder.toString());
+                        handler.postDelayed(this, bar_value * 1000);
+                    }
+                };
+                handler.post(r);
+
+                Toast.makeText(getContext(),"Finish",Toast.LENGTH_LONG).show();
 //                sendMessage(stringBuilder.toString());
 
             }
@@ -218,37 +227,30 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
         String[] strings = text.split(",");
         info.value = Double.parseDouble(strings[1]);
 
-        Log.d("time",info.toString());
+        Log.d("time", info.toString());
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {
             message = mapper.writeValueAsString(info);
-            Log.d("time",message);
+            Log.d("time", message);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                writer.write(message).addCallback(new SuccessCallback<String>() {
-                    @Override
-                    public void onSuccess(@org.jetbrains.annotations.Nullable String s) {
-                        Log.d("debug", "PUBLISH SUCCESS");
-                    }
-                }, new FailureCallback<String>() {
-                    @Override
-                    public void onFailure(String s, Throwable throwable) {
-                        Log.d("debug", "PUBLISH FAILURE", throwable);
-                    }
-                });
 
+        writer.write(message).addCallback(new SuccessCallback<String>() {
+            @Override
+            public void onSuccess(@org.jetbrains.annotations.Nullable String s) {
+                Log.d("debug", "PUBLISH SUCCESS");
             }
-        };
-        timer.schedule(task, bar_value*10000);
+        }, new FailureCallback<String>() {
+            @Override
+            public void onFailure(String s, Throwable throwable) {
+                Log.d("debug", "PUBLISH FAILURE", throwable);
+            }
+        });
+
 
     }
 
@@ -258,24 +260,11 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
 
         switch (sensorEvent.sensor.getType()) {
             case Sensor.TYPE_LIGHT:
-               final String light_value = String.valueOf(sensorEvent.values[0]);
+                final String light_value = String.valueOf(sensorEvent.values[0]);
                 if (!sensorItemList.isEmpty()) {
                     for (SensorItem item : sensorItemList) {
                         if (item.getSensorTopic().equals("mqtt-android-light")) {
                             item.setValue(light_value);
-
-//                            new Thread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    try {
-//                                        Thread.sleep(bar_value*100);
-//                                        sendor_value.append(light_value);
-//                                    }catch(InterruptedException e){
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            }).start();
-//                            Toast.makeText(getContext(),"Finish",Toast.LENGTH_LONG).show();
                         }
                         if (getActivity() != null) {
                             updateListView();
@@ -379,8 +368,8 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof Activity){
-            mActivity =(FragmentActivity) context;
+        if (context instanceof Activity) {
+            mActivity = (FragmentActivity) context;
         }
     }
 

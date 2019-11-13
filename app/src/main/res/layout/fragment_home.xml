@@ -195,7 +195,7 @@
                 android:layout_width="300dp"
                 android:layout_height="match_parent"
                 android:max="60"
-                android:progress="5">
+                android:progress="10">
 
             </SeekBar>
 
