@@ -44,6 +44,7 @@ import jp.ac.sinet.R;
 import jp.ac.sinet.sensormodel.AddNewSensorItemDialogFragment;
 import jp.ac.sinet.sensormodel.SensorItem;
 import jp.ac.sinet.sensormodel.SensorItemAdapter;
+import jp.ac.sinet.ui.home.HomeFragment;
 import jp.ad.sinet.stream.android.AndroidMessageWriterFactory;
 import jp.ad.sinet.stream.api.async.AsyncMessageWriter;
 import jp.ad.sinet.stream.api.async.FailureCallback;
@@ -66,7 +67,9 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
     private SensorItem sensorItem;
 
     protected FragmentActivity mActivity;
-    private List<Sensor> sensor_light,sensor_accle,sensor_gravity;
+    private List<Sensor> sensor_light,sensor_accle,sensor_pressure;
+    private Bundle bundle;
+    private String time_infor;
 
 
 
@@ -80,6 +83,14 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
         dashboardViewModel =
                 ViewModelProviders.of(this).get(DashboardViewModel.class);
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+
+        bundle = getArguments();
+        if (bundle!=null){
+            time_infor = bundle.getString("time");
+            Log.d("timessss", time_infor);
+        }
+
 
         textView = root.findViewById(R.id.text_dashboard);
 
@@ -108,6 +119,11 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
             }
         });
 
+        bundle = getArguments();
+        if (bundle!=null){
+            time_infor = bundle.getString("time");
+            Log.d("timessss", time_infor);
+        }
         return root;
     }
 
@@ -117,21 +133,21 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
         super.onActivityCreated(savedInstanceState);
         sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         sensor_light = sensorManager.getSensorList(Sensor.TYPE_LIGHT);
-        sensor_accle = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
-        sensor_gravity = sensorManager.getSensorList(Sensor.TYPE_GRAVITY);
+        sensor_accle = sensorManager.getSensorList(Sensor.TYPE_STEP_COUNTER);
+        sensor_pressure = sensorManager.getSensorList(Sensor.TYPE_PRESSURE);
 
         if (sensor_light.size() > 0) {
             Sensor s = sensor_light.get(0);
-            sensorManager.registerListener(this, s, SensorManager.SENSOR_DELAY_UI);
+            sensorManager.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
         }
 
         if (sensor_accle.size() > 0) {
             Sensor s = sensor_accle.get(0);
-            sensorManager.registerListener(this, s, SensorManager.SENSOR_DELAY_FASTEST);
+            sensorManager.registerListener(this, s, (int)1e6);
         }
 
-        if (sensor_gravity.size() > 0) {
-            Sensor s = sensor_gravity.get(0);
+        if (sensor_pressure.size() > 0) {
+            Sensor s = sensor_pressure.get(0);
             sensorManager.registerListener(this, s, SensorManager.SENSOR_DELAY_NORMAL);
         }
 
@@ -166,7 +182,7 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
                     }
                     i++;
                 }
-//                sendMessage(stringBuilder.toString());
+                sendMessage(stringBuilder.toString());
 
                 Log.d("tagg", stringBuilder.toString());
                 Toast.makeText(getContext(),stringBuilder.toString(),Toast.LENGTH_LONG).show();
@@ -177,7 +193,8 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
     private void sendMessage(String text) {
         MessageJson info = new MessageJson();
         info.time = info.timezone("Asia/Tokyo");
-        info.value = Double.parseDouble(text);
+        String[] strings = text.split(",");
+        info.value = Double.parseDouble(strings[1]);
 
         Log.d("time",info.toString());
 
@@ -206,57 +223,66 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        switch(sensorEvent.sensor.getType()){
+
+        switch (sensorEvent.sensor.getType()) {
             case Sensor.TYPE_LIGHT:
                 String light_value = String.valueOf(sensorEvent.values[0]);
-                if (!sensorItemList.isEmpty()){
+                if (!sensorItemList.isEmpty()) {
                     for (SensorItem item : sensorItemList) {
-                        if (item.getSensorTopic().equals("mqtt-android-light")){
+                        if (item.getSensorTopic().equals("mqtt-android-light")) {
                             item.setValue(light_value);
                         }
-                        if (getActivity()!= null) {
+                        if (getActivity() != null) {
                             updateListView();
                         }
                     }
                 }
                 break;
 //            case Sensor.TYPE_ACCELEROMETER:
-////                String str = sensorEvent.values[SensorManager.DATA_X] + "," + sensorEvent.values[SensorManager.DATA_Y] + "," + sensorEvent.values[SensorManager.DATA_Z];
 //                double accel_value_x = sensorEvent.values[SensorManager.DATA_X];
 //                double accel_value_y = sensorEvent.values[SensorManager.DATA_Y];
 //                double accel_value_z = sensorEvent.values[SensorManager.DATA_Z];
 //
-//                if (!sensorItemList.isEmpty()){
+//                if (!sensorItemList.isEmpty()) {
 //                    for (SensorItem item : sensorItemList) {
-//                        if (item.getSensorTopic().equals("mqtt-android-accelerometer")){
+//                        if (item.getSensorTopic().equals("mqtt-android-accelerometer")) {
 //                            DecimalFormat fmt = new DecimalFormat("##0.0");
-//
-//                            item.setValue("x:"+fmt.format(accel_value_x)+",y:"+fmt.format(accel_value_y)+",z:"+fmt.format(accel_value_z));
+//                            item.setValue("x:" + fmt.format(accel_value_x) + ",y:" + fmt.format(accel_value_y) + ",z:" + fmt.format(accel_value_z));
 //                        }
-//                        if (getActivity()!= null) {
+//                        if (getActivity() != null) {
 //                            updateListView();
 //                        }
 //                    }
 //                }
 //                break;
-//            case Sensor.TYPE_GRAVITY:
-////                String str = sensorEvent.values[SensorManager.DATA_X] + "," + sensorEvent.values[SensorManager.DATA_Y] + "," + sensorEvent.values[SensorManager.DATA_Z];
-//                String gravity = String.valueOf(sensorEvent.values[0]);
-//
-//                if (!sensorItemList.isEmpty()){
-//                    for (SensorItem item : sensorItemList) {
-//                        if (item.getSensorTopic().equals("mqtt-android-gravity")){
-//
-//                            item.setValue(""+gravity);
-//                        }
-//                        if (getActivity()!= null) {
-//                            updateListView();
-//                        }
-//                    }
-//                }
-//                break;
-        }
+            case Sensor.TYPE_STEP_COUNTER:
+                String step_counter = String.valueOf(sensorEvent.values[0]);
+                if (!sensorItemList.isEmpty()) {
+                    for (SensorItem item : sensorItemList) {
+                        if (item.getSensorTopic().equals("mqtt-android-stepcounter")) {
+                            item.setValue("" + step_counter);
+                        }
+                        if (getActivity() != null) {
+                            updateListView();
+                        }
+                    }
+                }
+                break;
 
+            case Sensor.TYPE_PRESSURE:
+                String pressure = String.valueOf(sensorEvent.values[0]);
+                if (!sensorItemList.isEmpty()) {
+                    for (SensorItem item : sensorItemList) {
+                        if (item.getSensorTopic().equals("mqtt-android-pressure")) {
+                            item.setValue("" + pressure);
+                        }
+                        if (getActivity() != null) {
+                            updateListView();
+                        }
+                    }
+                }
+                break;
+        }
     }
 
     @Override
@@ -311,5 +337,6 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
             mActivity =(FragmentActivity) context;
         }
     }
+
 
 }

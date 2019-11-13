@@ -105,7 +105,6 @@
         android:layout_column="2"
         android:layout_row="3"
         android:checked="true"
-        android:clickable="true"
         android:text="Check" />
 
     <ImageButton

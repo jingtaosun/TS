@@ -58,7 +58,7 @@ public class SensorItemAdapter extends ArrayAdapter<SensorItem> {
 
         ImageButton detailButton = mView.findViewById(R.id.sensor_item_detail_button);
 
-        final Switch sendSwitch = mView.findViewById(R.id.check_switch);
+        Switch sendSwitch = mView.findViewById(R.id.check_switch);
         sendSwitch.setTag(position);
         sendSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

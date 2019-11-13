@@ -103,49 +103,49 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Current Time:" />
+<!--        <TextView-->
+<!--            android:id="@+id/textView8"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:text="Current Time:" />-->
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:orientation="horizontal">-->
 
-            <TextView
-                android:id="@+id/hour01"
-                android:layout_width="100dp"
-                android:layout_height="60dp"
-                android:text="00" />
+<!--            <TextView-->
+<!--                android:id="@+id/hour01"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:text="00" />-->
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:text=":" />
+<!--            <TextView-->
+<!--                android:id="@+id/textView4"-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:text=":" />-->
 
-            <TextView
-                android:id="@+id/min01"
-                android:layout_width="100dp"
-                android:layout_height="60dp"
-                android:text="00" />
+<!--            <TextView-->
+<!--                android:id="@+id/min01"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:text="00" />-->
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:text=":" />
+<!--            <TextView-->
+<!--                android:id="@+id/textView6"-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:text=":" />-->
 
-            <TextView
-                android:id="@+id/second01"
-                android:layout_width="100dp"
-                android:layout_height="60dp"
-                android:text="00" />
+<!--            <TextView-->
+<!--                android:id="@+id/second01"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="60dp"-->
+<!--                android:text="00" />-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <Button
             android:id="@+id/dialog01"

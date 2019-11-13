@@ -12,6 +12,7 @@ import java.nio.file.Files;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,12 +24,13 @@ import jp.ac.sinet.ui.notifications.NotificationsFragment;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-public class NIIMainActivity extends AppCompatActivity {
+public class NIIMainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener{
 
 
     private HomeFragment homeFragment;
     private DashboardFragment settingFragment;
     private NotificationsFragment resultFragment;
+    String time_information;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,12 @@ public class NIIMainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, homeFragment,"HomeFragment").commit();
                         return true;
                     case R.id.navigation_dashboard:
+                        if (time_information!=null){
+                            Log.d("tttttt",time_information);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("time",time_information);
+                            settingFragment.setArguments(bundle);
+                        }
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, settingFragment,"SettingFragment").commit();
                         return true;
                     case R.id.navigation_notifications:
@@ -84,4 +92,9 @@ public class NIIMainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onFragmentInteractionFromHomeToMain(String time) {
+        time_information = time;
+        Log.d("tagggggg", time_information);
+    }
 }

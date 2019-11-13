@@ -15,15 +15,15 @@
 
     <string-array name="sensor_topics">
         <item>mqtt-android-light</item>
-        <item>mqtt-android-accelerometer</item>
-        <item>mqtt-android-gravity</item>
+        <item>mqtt-android-stepcounter</item>
+        <item>mqtt-android-pressure</item>
         <item>mqtt-android-video</item>
         <item>mqtt-android-GPS</item>
     </string-array>
     <string-array name="sensor_types">
         <item>general-light</item>
-        <item>general-accelerometer</item>
-        <item>general-gravity</item>
+        <item>general-stepcounter</item>
+        <item>general-pressure</item>
         <item>sensor-video</item>
         <item>sensor-image</item>
     </string-array>
