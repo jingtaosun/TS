@@ -10,7 +10,9 @@ public class SensorItem implements Serializable {
 
     private int qos;
     private boolean retained;
-    private double value;
+    private String value;
+
+    public boolean checkbox;
 
     public SensorItem(){
         sensorName = "";
@@ -24,11 +26,11 @@ public class SensorItem implements Serializable {
         this.retained = retained;
     }
 
-    public double getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(String value) {
         this.value = value;
     }
 

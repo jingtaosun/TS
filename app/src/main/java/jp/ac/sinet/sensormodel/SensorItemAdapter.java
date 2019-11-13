@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.List;
@@ -55,6 +57,17 @@ public class SensorItemAdapter extends ArrayAdapter<SensorItem> {
         TextView valueText = mView.findViewById(R.id.sensor_value);
 
         ImageButton detailButton = mView.findViewById(R.id.sensor_item_detail_button);
+
+        final Switch sendSwitch = mView.findViewById(R.id.check_switch);
+        sendSwitch.setTag(position);
+        sendSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d("check", "onClick: checkBox: "+ isChecked + " at No."+ buttonView.getTag());
+                item.checkbox = isChecked;
+            }
+        });
+        sendSwitch.setChecked(item.checkbox);
 
         nameText.setText(item.getSensorName());
         topicText.setText(item.getSensorTopic());
