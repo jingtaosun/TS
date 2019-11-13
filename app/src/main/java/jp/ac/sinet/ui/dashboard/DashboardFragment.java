@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -192,13 +194,7 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
 
                         if (time_process>0) {
                             for (int j = 0; j < time_process; j++) {
-                                try {
-                                     Thread.sleep(bar_value*1000);
-                                    sendMessage(stringBuilder.toString());
-
-                                }catch(InterruptedException e){
-                                    e.printStackTrace();
-                                }
+                                sendMessage(stringBuilder.toString());
                                 Log.d("tagg", stringBuilder.toString()+":"+j);
                             }
                             Toast.makeText(getContext(),"Finish",Toast.LENGTH_LONG).show();
@@ -215,10 +211,12 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
     }
 
     private void sendMessage(String text) {
+
+
         MessageJson info = new MessageJson();
         info.time = info.timezone("Asia/Tokyo");
         String[] strings = text.split(",");
-        info.value = Double.parseDouble(strings[0]);
+        info.value = Double.parseDouble(strings[1]);
 
         Log.d("time",info.toString());
 
@@ -231,17 +229,27 @@ public class DashboardFragment extends Fragment implements SensorEventListener{
             e.printStackTrace();
         }
 
-        writer.write(message).addCallback(new SuccessCallback<String>() {
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
             @Override
-            public void onSuccess(@org.jetbrains.annotations.Nullable String s) {
-                Log.d("debug", "PUBLISH SUCCESS");
+            public void run() {
+                // TODO Auto-generated method stub
+                writer.write(message).addCallback(new SuccessCallback<String>() {
+                    @Override
+                    public void onSuccess(@org.jetbrains.annotations.Nullable String s) {
+                        Log.d("debug", "PUBLISH SUCCESS");
+                    }
+                }, new FailureCallback<String>() {
+                    @Override
+                    public void onFailure(String s, Throwable throwable) {
+                        Log.d("debug", "PUBLISH FAILURE", throwable);
+                    }
+                });
+
             }
-        }, new FailureCallback<String>() {
-            @Override
-            public void onFailure(String s, Throwable throwable) {
-                Log.d("debug", "PUBLISH FAILURE", throwable);
-            }
-        });
+        };
+        timer.schedule(task, bar_value*10000);
+
     }
 
 
